@@ -1,0 +1,153 @@
+*** Settings ***
+Library           AppiumLibrary
+
+*** Test Cases ***
+TC1-takephoto_and_checkdetails
+    [Tags]    C_TC1
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'jpg')]
+    Sleep    3s
+    Should Contain    ${text}    jpg
+
+TC2-VGA
+    [Tags]    C_TC2
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Click Element    id=org.codeaurora.snapcam:id/menu
+    Click Element    xpath=/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.ListView/android.widget.RelativeLayout[3]/android.widget.TextView[1]
+    Click Element    xpath=/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[2]/android.widget.ListView/android.widget.LinearLayout[9]/android.widget.TextView
+    Go Back
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'MP')]
+    Sleep    3s
+    Should Contain    ${text}    480 x 640
+
+TC3-Launch-Exitfromgallery_relaunch
+    [Documentation]    Exit from gallery and relaunch the camera app.
+    [Tags]    C-TC3
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Click Element    id=org.codeaurora.snapcam:id/camera_switcher
+    Click Element    xpath=//android.widget.ImageView[@content-desc=\"Switch to video\"]
+    Sleep    2s
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Sleep    8s
+    Go Back
+    Sleep    3s
+    Go Back
+    Start Activity    org.codeaurora.snapcam    com.android.camera.CameraLauncher
+    @{elements}    Get Webelements    id=org.codeaurora.snapcam:id/camera_switcher
+    Length Should Be    ${elements}    1
+    Close Application
+
+TC4-8M
+    [Tags]    C_TC4
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Sleep    2s
+    Click Element    id=org.codeaurora.snapcam:id/menu
+    Click Element    xpath=/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.ListView/android.widget.RelativeLayout[3]/android.widget.TextView[1]
+    Click Element    xpath=//*[contains(@text,'8M pixels')]
+    Go Back
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'MP')]
+    Sleep    3s
+    Should Contain    ${text}    8.0MP \ \ \ 2448 x 3264
+
+TC5-front_camera
+    [Tags]    C_TC5
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/front_back_switcher
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'MP')]
+    Sleep    3s
+    Should Contain    ${text}    .9MP \ \ \ 720 x 1280
+    Go Back
+    Go Back
+    Click Element    id=org.codeaurora.snapcam:id/front_back_switcher
+
+TC6-5M
+    [Tags]    C_TC6
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Sleep    2s
+    Click Element    id=org.codeaurora.snapcam:id/menu
+    Click Element    xpath=/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.ListView/android.widget.RelativeLayout[3]/android.widget.TextView[1]
+    Click Element    xpath=//*[contains(@text,'5M pixels')]
+    Go Back
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'MP')]
+    Sleep    3s
+    Should Contain    ${text}    5.0MP \ \ \ 1944 x 2592
+
+TC7-video_and_details
+    [Tags]    C_TC7
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Click Element    id=org.codeaurora.snapcam:id/camera_switcher
+    Click Element    xpath=//android.widget.ImageView[@content-desc=\"Switch to video\"]
+    Sleep    2s
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    5s
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Sleep    3s
+    Click Element    class=android.widget.FrameLayout
+    Sleep    3s
+    @{elements}    Get Webelements    id=com.google.android.apps.photos:id/video_player_progress
+    Length Should Be    ${elements}    1
+
+TC8-720p_video
+    [Tags]    C_TC8
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=org.codeaurora.snapcam    appActivity=com.android.camera.CameraLauncher
+    Click Element    id=com.android.packageinstaller:id/permission_allow_button
+    Sleep    2s
+    Click Element    id=org.codeaurora.snapcam:id/camera_switcher
+    Click Element    xpath=//android.widget.ImageView[@content-desc=\"Switch to video\"]
+    Click Element    id=org.codeaurora.snapcam:id/menu
+    Click Element    xpath=/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.ListView/android.widget.RelativeLayout[3]/android.widget.TextView[1]
+    Click Element    xpath=//*[contains(@text,'HD 720p')]
+    Go Back
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    org.codeaurora.snapcam:id/shutter_button
+    Sleep    3s
+    Click Element    id=org.codeaurora.snapcam:id/preview_thumb
+    Click Element    class=android.widget.FrameLayout
+    Sleep    3s
+    Click Element    id=com.google.android.apps.photos:id/details
+    Sleep    3s
+    ${text}    Get Text    xpath=//*[contains(@text,'720')]
+    Sleep    3s
+    Should Contain    ${text}    720
+    Go Back
+    Go Back
+    Click Element    id=org.codeaurora.snapcam:id/camera_switcher
+    Click Element    xpath=//android.widget.ImageView[@content-desc=\"Switch to photo\"]
+
