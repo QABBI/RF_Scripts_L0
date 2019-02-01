@@ -1,0 +1,52 @@
+*** Settings ***
+Library           AppiumLibrary
+
+*** Test Cases ***
+TC1_EMM_Login
+    [Tags]    E_TC1
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebirdcorp.emm.agent    appActivity=com.bluebirdcorp.emm.agent.activities.AlreadyRegisteredActivity
+    Sleep    3s
+    Click Element    id=com.bluebirdcorp.emm.agent:id/btnSkipProfile
+    Sleep    3s
+    Input Text    id=com.bluebirdcorp.emm.agent:id/editTextServerIP    mdm.bluebirdcorp.com:8280
+    Click Element    id=com.bluebirdcorp.emm.agent:id/btnStartRegistration
+    Sleep    5s
+    Input Text    id=com.bluebirdcorp.emm.agent:id/etUsername    admin
+    Input Text    com.bluebirdcorp.emm.agent:id/etPassword    B1ueb!rd
+    Go Back
+    Click Element    com.bluebirdcorp.emm.agent:id/btnSignIn
+    Sleep    5s
+    Click Element    com.android.settings:id/action_button
+    Sleep    15s
+    @{elements}    Get Webelements    id=com.bluebirdcorp.emm.agent:id/textViewVersion
+    Length Should Be    ${elements}    1
+
+TC2-Check EMM_Agent_version
+    [Tags]    E_TC2
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebirdcorp.emm.agent    appActivity=com.bluebirdcorp.emm.agent.activities.AlreadyRegisteredActivity
+    Sleep    3s
+    ${text}    Get Text    id=com.bluebirdcorp.emm.agent:id/textViewVersion
+    Sleep    3s
+    Should Contain    ${text}    v2.0.0.8
+
+TC3_Check_DeviceInfo_EMM_Owner
+    [Tags]    E_TC3
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=com.bluebirdcorp.emm.agent    appActivity=com.bluebirdcorp.emm.agent.activities.AlreadyRegisteredActivity
+    Sleep    3s
+    Click Element    id=com.bluebirdcorp.emm.agent:id/imageView4
+    Sleep    3s
+    ${text}    Get Text    id=com.bluebirdcorp.emm.agent:id/textView2
+    Sleep    3s
+    Should Contain    ${text}    admin
+    Go Back
+
+TC4--EMM_UnregistorDevice
+    [Tags]    E_TC4
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EF500RA4LQSRDBC513    appPackage=com.bluebirdcorp.emm.agent    appActivity=com.bluebirdcorp.emm.agent.activities.AlreadyRegisteredActivity
+    Sleep    3s
+    Click Element    com.bluebirdcorp.emm.agent:id/textViewRegistrationTitle
+    Sleep    3s
+    Click Element    android:id/button1
+    Sleep    10s
+    @{elements}    Get Webelements    id=com.bluebirdcorp.emm.agent:id/btnSkipProfile
+    Length Should Be    ${elements}    1
