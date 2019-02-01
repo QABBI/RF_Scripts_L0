@@ -1,0 +1,53 @@
+*** Settings ***
+Suite Setup       Log To Console    Memory Test cases Starting
+Suite Teardown    Log To Console    Memory Test cases Completed
+Library           AppiumLibrary
+
+*** Test Cases ***
+TC1-Copy_file_to_internal_memory
+    [Documentation]    Copy file to internal memory.
+    [Tags]    M_TC1
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebird.filemanagers    appActivity=com.bluebird.filemanagers.FileManagerMain
+    Push File    /mnt/sdcard/Download/10mb.txt    C:\\Users\\Bluebird\\Desktop\\10mb.txt    encode=False
+    Click Element    id=com.bluebird.filemanagers:id/home_button
+    Click Element    xpath=//*[contains(@text,'Download')]
+    ${text}    Get Text    xpath=//*[contains(@text,'10mb')]
+    Should Contain    ${text}    10mb.txt
+
+TC2_Copy_to_externalSDCard
+    [Documentation]    Copy file to external sd card folder
+    [Tags]    M_TC2
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebird.filemanagers    appActivity=com.bluebird.filemanagers.FileManagerMain
+    Go Back
+    Go Back
+    Push File    /storage/5EF4-A656/Test/10mb.txt    C:\\Users\\Bluebird\\Desktop\\10mb.txt    encode=False
+    Sleep    3s
+    Click Element    xpath=//*[contains(@text,'Test')]
+    ${text}    Get Text    xpath=//*[contains(@text,'10mb')]
+    Should Contain    ${text}    10mb.txt
+
+TC3__Copy_mp3music_to_internal_memory
+    [Documentation]    Copy mp3 music file to external sd card folder.
+    [Tags]    M_TC3
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebird.filemanagers    appActivity=com.bluebird.filemanagers.FileManagerMain
+    Push File    mnt/sdcard/Download/Test.mp3    C:\\Users\\Bluebird\\Desktop\\Test.mp3    encode=False
+    Click Element    id=com.bluebird.filemanagers:id/home_button
+    Click Element    xpath=//*[contains(@text,'Download')]
+    ${text}    Get Text    xpath=//*[contains(@text,'Test.mp3')]
+    Should Contain    ${text}    Test.mp3
+
+TC4_Create_newFolder_toExternalSdcard
+    [Documentation]    Create new folder in External SD card
+    [Tags]    M_TC4
+    Open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=6.0.1    deviceName=EFXXXXXXXXX    appPackage=com.bluebird.filemanagers    appActivity=com.bluebird.filemanagers.FileManagerMain
+    Go Back
+    Go Back
+    Click Element    xpath=//android.widget.ImageButton[@content-desc=\"More options\"]
+    Click Element    id=android:id/title
+    Sleep    3s
+    Input Text    com.bluebird.filemanagers:id/input_inputText    NewTest
+    Sleep    2s
+    Click Element    com.bluebird.filemanagers:id/input_create_b
+    Click Element    xpath=//*[contains(@text,'NewTest')]
+    ${text}    Get Text    xpath=//*[contains(@text,'NewTest')]
+    Should Contain    ${text}    New
